@@ -6,11 +6,13 @@ class App extends Component {
     super(props);
     this.state = {
       email : "",
-      regex : new RegExp('@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$'),
+      regex : new RegExp('(?<=@)[^.]+(?=\.)'),
       isValidMail : false,
-      vendor : ''
+      vendor : '',
+      mailVendorList : ['google', 'Microsoft', 'Yahoo']
     }
     this.checkIsEmail = this.checkIsEmail.bind(this)
+    this.mailVendor = this.mailVendor.bind(this)
   }
 
   checkIsEmail = () => {
@@ -18,13 +20,28 @@ class App extends Component {
     if(mail !== null){
       this.setState({
         isValidMail : true,
-        vendor : mail[4]
+        vendor : mail
       })
     } else {
       this.setState({
         isValidMail : false,
         vendor : ''
       })
+    }
+  }
+
+  mailVendor = () => {
+    if(this.state.vendor === "gmail"){
+      return "Google"
+    }
+    else if(this.state.vendor === "outlook"){
+      return "Microsoft"
+    }
+    else if(this.state.vendor === "ymail"){
+      return "Yahoo"
+    }
+    else {
+      return "Tidak ada di list"
     }
   }
 
@@ -50,7 +67,7 @@ class App extends Component {
         <div id="responseData">
             {
               this.state.isValidMail? 
-              `dengan vendor ${this.state.vendor}` : "Maaf itu bukan alamat email"
+              `dengan Domain ${this.state.vendor}` : "Maaf itu bukan alamat email"
             }
         </div>
       </div>
